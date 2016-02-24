@@ -3,8 +3,9 @@ using System.Collections;
 
 public class CharacterController : MonoBehaviour {
     private float horizontalBaseTurnSpeed =50000f;
-    private float verticalBaseTurnSpeed = 5000f;
+    private float verticalBaseTurnSpeed = -500f;
     private float movementSpeed = 20f;
+	public Transform gun;
 
     // Use this for initialization
     void Start () {
@@ -22,6 +23,7 @@ public class CharacterController : MonoBehaviour {
         transform.Translate(Vector3.right*(InputManager.getStrafeRight()+(-1*InputManager.getStrafeLeft()))*Time.deltaTime*movementSpeed);
         float horizontalSpeed = InputManager.getHorizontalTurn() * horizontalBaseTurnSpeed * Time.deltaTime;
         float verticalSpeed = InputManager.getVerticalTurn() * verticalBaseTurnSpeed * Time.deltaTime;
+		gun.Rotate(new Vector3(verticalSpeed,0f,0f));
         transform.Rotate(new Vector3(0F,horizontalSpeed,0f)*Time.deltaTime);
     }
 }
