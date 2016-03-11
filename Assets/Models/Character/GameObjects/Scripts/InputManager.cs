@@ -5,21 +5,24 @@ using XboxCtrlrInput;
 public class InputManager : MonoBehaviour {
 
     public static float getForward() {
-        if(Input.GetKey(KeyCode.W)) {
+        if(Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
             return 1f;
         }
-        if(XCI.GetAxis(XboxAxis.LeftStickY)<0.05) {
+        if(!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) {
+            return -1f;
+        }
+        if(Mathf.Abs(XCI.GetAxis(XboxAxis.LeftStickY))>0.05) {
             return XCI.GetAxis(XboxAxis.LeftStickY);
         }
         return 0;
-        //Controller support
     }
+    
 
     public static float getHorizontalTurn() {
         if(Mathf.Abs(Input.GetAxis("Mouse X"))> 0.01) {
             return Input.GetAxis("Mouse X");
         }
-        if(Mathf.Abs(XCI.GetAxis(XboxAxis.RightStickX))<0.01) {
+        if(Mathf.Abs(XCI.GetAxis(XboxAxis.RightStickX))>0.01) {
             return XCI.GetAxis(XboxAxis.RightStickX);
         }
         return 0;
@@ -29,41 +32,21 @@ public class InputManager : MonoBehaviour {
         if(Mathf.Abs(Input.GetAxis("Mouse Y"))> 0.01) {
             return Input.GetAxis("Mouse Y");
         }
-        if(Mathf.Abs(XCI.GetAxis(XboxAxis.RightStickY))<0.01) {
+        if(Mathf.Abs(XCI.GetAxis(XboxAxis.RightStickY))>0.01) {
             return XCI.GetAxis(XboxAxis.RightStickY);
         }
         return 0;
     }
-}
 
-    public static float getBackwards() {
-        if(Input.GetKey(KeyCode.S)) {
+    public static float getStrafe() {
+        if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
+            return -1f;
+        }
+        if(!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) {
             return 1f;
         }
-        if(XCI.GetAxis(XboxAxis.LeftStickY)<0.05) {
-            return (-1f) * XCI.GetAxis(XboxAxis.LeftStickY);
-        }
-        return 0;
-        //Controller support
-    }
-
-    public static float getStrafeLeft() {
-        if(Input.GetKey(KeyCode.A)) {
-            return 1f;
-        }
-        if(XCI.GetAxis(XboxAxis.LeftStickX)<0.05) {
-            return (-1f) * XCI.GetAxis(XboxAxis.LeftStickX);
-        }
-        return 0f;
-        //Controller support
-    }
-
-    public static float getStrafeRight() {
-        if(Input.GetKey(KeyCode.D)) {
-            return 1f;
-        }
-        if(XCI.GetAxis(XboxAxis.LeftStickX)>0.05) {
-            return (-1f) * XCI.GetAxis(XboxAxis.LeftStickX);
+        if(Mathf.Abs(XCI.GetAxis(XboxAxis.LeftStickX))>0.05) {
+            return XCI.GetAxis(XboxAxis.LeftStickX);
         }
         return 0f;
         //Controller support
@@ -102,7 +85,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public static bool jump() {
-        if(Input.GetKey(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Space)) {
             return true;
         }
         if(XCI.GetButtonDown(XboxButton.A)) {
