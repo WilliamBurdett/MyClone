@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XboxCtrlrInput;
 
 public class MovementController : MonoBehaviour {
     private float horizontalBaseTurnSpeed =50000f;
@@ -9,6 +10,7 @@ public class MovementController : MonoBehaviour {
     private float stayOnGroundGravity = 1f;
     private Vector3 movementDirection;
     private CharacterController characterController;
+    public XboxController controller;
 
     private bool jumping;
     private float currentAirTime;
@@ -32,7 +34,7 @@ public class MovementController : MonoBehaviour {
     void Update() {
         jumped = false;
         localTurnControl();
-        jumped = InputManager.jump();
+        jumped = InputManager.getJump(controller);
     }
 	
 	// Update is called once per frame
@@ -70,15 +72,15 @@ public class MovementController : MonoBehaviour {
     }
 
     void localMovementControl() {
-        movementDirection += transform.forward * InputManager.getForward();
-        movementDirection += transform.right * InputManager.getStrafe();
+        movementDirection += transform.forward * InputManager.getForward(controller);
+        movementDirection += transform.right * InputManager.getStrafe(controller);
         movementDirection *= movementSpeed;
     }
 
 
     void localTurnControl() {
-        float horizontalSpeed = InputManager.getHorizontalTurn() * horizontalBaseTurnSpeed * Time.deltaTime;
-        float verticalSpeed = InputManager.getVerticalTurn() * verticalBaseTurnSpeed * Time.deltaTime;
+        float horizontalSpeed = InputManager.getHorizontalTurn(controller) * horizontalBaseTurnSpeed * Time.deltaTime;
+        float verticalSpeed = InputManager.getVerticalTurn(controller) * verticalBaseTurnSpeed * Time.deltaTime;
         arm.Rotate(new Vector3(verticalSpeed,0f,0f));
         transform.Rotate(new Vector3(0F,horizontalSpeed,0f)*Time.deltaTime);
     }
